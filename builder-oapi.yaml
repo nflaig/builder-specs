@@ -110,6 +110,8 @@ components:
   examples:
     Bellatrix.SignedBlindedBeaconBlock:
       $ref: "./examples/bellatrix/signed_blinded_beacon_block.json"
+    Bellatrix.SignedBlindedBeaconBlock.ssz:
+      externalValue: "./examples/bellatrix/signed_blinded_beacon_block.ssz"
     Bellatrix.ExecutionPayload:
       $ref: "./examples/bellatrix/execution_payload.json"
     Bellatrix.SignedBuilderBid:

@@ -43,6 +43,9 @@ post:
       application/octet-stream:
         schema:
           description: "SSZ serialized `SignedBlindedBeaconBlock` bytes. Use content type header to indicate that SSZ data is contained in the request body."
+        examples:
+          bellatrix:
+            $ref: "../../builder-oapi.yaml#/components/examples/Bellatrix.SignedBlindedBeaconBlock.ssz"
   responses:
     "200":
       description: Success response.
