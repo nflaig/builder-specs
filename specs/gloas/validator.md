@@ -162,8 +162,8 @@ from competing builders).
 
 #### Default auth data
 
-The default `data` for a builder URL is the builder's hostname: the lowercased
-ASCII hostname of the URL, an IPv6 literal written in its compressed form
+The default `data` is the hostname of the builder's URL: lowercased, in its
+ASCII form, with an IPv6 literal written in its compressed form
 ([RFC 5952][rfc-5952]) inside brackets. Scheme, userinfo, port, path, query and
 fragment are not part of the builder's identity and are dropped, so differences
 in how the URL is written, such as a trailing `/` or an explicit default port,
