@@ -164,20 +164,23 @@ from competing builders).
 
 The default `data` is the hostname of the builder's URL: lowercased, in its
 ASCII form, with an IPv6 literal written in its compressed form
-([RFC 5952][rfc-5952]) inside brackets. Scheme, userinfo, port, path, query and
-fragment are not part of the builder's identity and are dropped, so differences
-in how the URL is written, such as a trailing `/` or an explicit default port,
-do not change the signed bytes. An internationalized hostname MUST be given in
-its punycode form.
+([RFC 5952][rfc-5952]) inside brackets, using hexadecimal groups only and never
+the mixed IPv4 notation. Scheme, userinfo, port, path, query and fragment are
+not part of the builder's identity and are dropped, so differences in how the
+URL is written, such as a trailing `/` or an explicit default port, do not
+change the signed bytes. An internationalized hostname MUST be given in its
+punycode form.
 
 ```python
 def get_default_auth_data(url: str) -> bytes:
     host = urlsplit(url).hostname  # lowercased, userinfo and port removed
     assert host is not None and host.isascii()
     if ":" in host:  # IPv6 literal
-        host = f"[{IPv6Address(host).compressed}]"
+        host = f"[{compress_ipv6(host)}]"
     return host.encode("ascii")
 ```
+
+`compress_ipv6` returns the address in the text form described above.
 
 | URL                                        | `data`                |
 | ------------------------------------------ | --------------------- |
@@ -187,6 +190,7 @@ def get_default_auth_data(url: str) -> bytes:
 | `https://user:pw@builder.example.com/`     | `builder.example.com` |
 | `https://10.0.0.5:18550/eth/v1/builder`    | `10.0.0.5`            |
 | `https://[0:0:0:0:0:0:0:1]:8443/`          | `[::1]`               |
+| `https://[::ffff:192.0.2.1]/`              | `[::ffff:c000:201]`   |
 
 A builder that needs a finer identity than its hostname, for example one host
 serving several builders on different paths or ports, agrees `data` with its
